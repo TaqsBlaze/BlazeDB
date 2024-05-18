@@ -1,4 +1,4 @@
-# BlazeDB
+# BlazeDB ![alt text](https://cdn-icons-png.flaticon.com/128/5246/5246837.png)
 
 ## Installation
 `npm i blazedb@latest`
