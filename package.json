@@ -1,0 +1,29 @@
+{
+  "name": "blazedb",
+  "version": "0.0.1",
+  "description": "BlazeDB is highly flexible database suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taqsblaze/BlazeDB.git"
+  },
+  "keywords": [
+    "db",
+    "database",
+    "flexible"
+  ],
+  "author": "Tanaka Chinengundu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taqsblaze/BlazeDB/issues"
+  },
+  "homepage": "https://github.com/taqsblaze/BlazeDB#readme",
+  "devDependencies": {},
+  "exports": {
+    ".": "./blazedb.js",
+    "./schema": "./schema/db-schema.js"
+  }
+}
