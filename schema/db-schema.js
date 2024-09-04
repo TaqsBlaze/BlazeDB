@@ -1,50 +1,52 @@
-const BlazeDB = require("../blazedb");
+const BlazeDB = require("../blazedb"); // Consider removing if using dependency injection
 
 class BlazeDBSchema {
-    constructor(BlazeDB) {
-      this.BlazeDB = BlazeDB;
-      this.models = [];
-      this.properties = {};
+    constructor(blazeDBInstance) {
+        this.BlazeDB = blazeDBInstance;
+        this.models = [];
+        this.properties = {};
     }
-  
+
     addModel(model) {
-      this.models.push(model);
+        this.models.push(model);
     }
-  
+
     async createSchema() {
-      const schema = {};
-      schema['properties'] = {};
-  
-      // Create the root object
-      schema.$schema = 'http://json-schema.org/draft-07/schema#';
-      schema.type = 'object';
-  
-      // Add fields to the schema
-      this.models.forEach((model) => {
-        Object.keys(model.fields).forEach((field) => {
-          const fieldType = model.fields[field].type;
-          if (fieldType === 'string') {
-            schema.properties[field] = { type: 'string' };
-          } else if (fieldType === 'number') {
-            schema.properties[field] = { type: 'integer' };
-          } else if (fieldType === 'boolean') {
-            schema.properties[field] = { type: 'boolean' };
-          }
+        const schema = {
+            $schema: 'http://json-schema.org/draft-07/schema#',
+            type: 'object',
+            properties: {},
+            required: [] // Initialize with an empty array
+        };
+
+        // Add fields to the schema
+        this.models.forEach((model) => {
+            Object.keys(model.fields).forEach((field) => {
+                const fieldType = model.fields[field].type;
+                const fieldSchema = {};
+
+                if (fieldType === 'string') {
+                    fieldSchema.type = 'string';
+                } else if (fieldType === 'number') {
+                    fieldSchema.type = 'integer';
+                } else if (fieldType === 'boolean') {
+                    fieldSchema.type = 'boolean';
+                }
+
+                schema.properties[field] = fieldSchema;
+
+                // Collect required fields
+                if (model.fields[field].required) {
+                    if (!schema.required.includes(field)) {
+                        schema.required.push(field);
+                    }
+                }
+            });
         });
-      });
-  
-      // Add required fields to the schema
-      this.models.forEach((model) => {
-        Object.keys(model.fields).forEach((field) => {
-          if (model.fields[field].required) {
-            schema.required = [field];
-          }
-        });
-      });
-  
-      // Write the schema to the database
-      await this.BlazeDB.createSchema(schema);
+
+        // Write the schema to the database
+        await this.BlazeDB.createSchema(schema);
     }
-  }
-  
-  module.exports = BlazeDBSchema;
+}
+
+module.exports = BlazeDBSchema;
