@@ -70,6 +70,60 @@ db.setData(user1).then((error) =>{
 });
 ```
 
+# Using Adapters
+
+## sqlite Adapter
+
+### How to us
+
+First of all you need to install the sqlite package
+```
+npm install sqlite3 sqlite
+```
+
+```
+// app.js
+const BlazeDB = require('./blazedb');
+const SQLiteAdapter = require('./adapters/sqlite-adapter');
+
+// Using SQLite adapter
+const blazeDBWithSQLite = new BlazeDB(new SQLiteAdapter());
+
+// Create a schema
+const schema = {
+  properties: {
+    id: { type: 'integer' },
+    name: { type: 'string' },
+    age: { type: 'integer' }
+  }
+};
+
+async function run() {
+  await blazeDBWithSQLite.createSchema(schema);
+
+  // Add some data
+  await blazeDBWithSQLite.setData({ id: 1, name: 'Blaze', age: 30 });
+  await blazeDBWithSQLite.setData({ id: 2, name: 'John Doe', age: 25 });
+
+  // Get data
+  const data = await blazeDBWithSQLite.getData();
+  console.log(data);
+
+  // Update a user
+  await blazeDBWithSQLite.updateData(1, { name: 'Blaze Updated' });
+
+  // Delete a user
+  await blazeDBWithSQLite.deleteData(2);
+
+  // Close the connection when done
+  await blazeDBWithSQLite.close();
+}
+
+run();
+```
+
+
+
 ## Contributing
 
 We welcome contributions to the project! Here’s how you can help:
