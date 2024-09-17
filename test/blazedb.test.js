@@ -1,5 +1,6 @@
 const BlazeDB = require('../blazedb'); // Adjust the path if necessary
 const BlazeDBSchema = require('../schema/db-schema'); // Adjust the path if necessary
+const adapter = require('../adapters/json-adapter')
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -8,7 +9,7 @@ describe('BlazeDB', () => {
   let blazeDB;
 
   beforeAll(async () => {
-    blazeDB = new BlazeDB();
+    blazeDB = new BlazeDB(new adapter());
     // Initialize the db.json file with schema and data for testing
     const schemaInstance = new BlazeDBSchema(blazeDB);
     const userModel = {
