@@ -4,21 +4,12 @@ const fs = require('fs').promises;
 const path = require('path');
 
 describe('BlazeDB', () => {
-  const dbPath = path.join(__dirname, 'db.json');
+  const dbPath = path.join(__dirname, '../db.json');
   let blazeDB;
 
   beforeAll(async () => {
     blazeDB = new BlazeDB();
-    // Initialize the db.json file with an empty schema and data for testing
-    await fs.writeFile(dbPath, JSON.stringify({ schema: {}, data: [] }, null, 2));
-  });
-
-  afterAll(async () => {
-    // Clean up the test database file after all tests are complete
-    await fs.unlink(dbPath);
-  });
-
-  test('should create a schema', async () => {
+    // Initialize the db.json file with schema and data for testing
     const schemaInstance = new BlazeDBSchema(blazeDB);
     const userModel = {
       name: 'User',
@@ -29,12 +20,22 @@ describe('BlazeDB', () => {
       }
     };
 
+    // Dynamically create schema instead of hardcoding it
     schemaInstance.addModel(userModel);
     await schemaInstance.createSchema();
+  });
 
+  afterAll(async () => {
+    // Clean up the test database file after all tests are complete
+    await fs.unlink(dbPath);
+  });
+
+  test('should create a schema', async () => {
     const dbData = await fs.readFile(dbPath, 'utf8');
     const jsonData = JSON.parse(dbData);
+    console.log("Data:", jsonData);
 
+    // Check if schema properties are correctly set
     expect(jsonData.schema.properties).toHaveProperty('id');
     expect(jsonData.schema.properties).toHaveProperty('name');
     expect(jsonData.schema.properties).toHaveProperty('age');
