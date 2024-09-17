@@ -21,6 +21,7 @@ describe('BlazeDB', () => {
       }
     };
 
+    
     // Dynamically create schema instead of hardcoding it
     schemaInstance.addModel(userModel);
     await schemaInstance.createSchema();
@@ -32,9 +33,8 @@ describe('BlazeDB', () => {
   });
 
   test('should create a schema', async () => {
-    const dbData = await fs.readFile(dbPath, 'utf8');
-    const jsonData = JSON.parse(dbData);
-    console.log("Data:", jsonData);
+    let dbData = await fs.readFile(dbPath, 'utf8');
+    let jsonData = JSON.parse(dbData);
 
     // Check if schema properties are correctly set
     expect(jsonData.schema.properties).toHaveProperty('id');
@@ -45,7 +45,9 @@ describe('BlazeDB', () => {
   test('should add a user', async () => {
     const newUser = { id: 1, name: 'John Doe', age: 30 };
     await blazeDB.setData(newUser);
-
+    let dbrData = await fs.readFile(dbPath, 'utf8');
+    let jsonData = JSON.parse(dbrData);
+    console.log("Data:", jsonData);
     const dbData = await blazeDB.getData();
     expect(dbData).toContainEqual(newUser);
   });
