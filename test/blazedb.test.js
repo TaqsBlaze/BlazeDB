@@ -1,16 +1,22 @@
 const BlazeDB = require('../blazedb'); // Adjust the path if necessary
 const BlazeDBSchema = require('../schema/db-schema'); // Adjust the path if necessary
-const adapter = require('../adapters/json-adapter')
 const fs = require('fs').promises;
 const path = require('path');
 
-describe('BlazeDB', () => {
-  const dbPath = path.join(__dirname, '../db.json');
+// Define all adapters you want to test
+const adapters = [
+  { name: 'JSON Adapter', adapter: require('../adapters/json-adapter'), dbPath: path.join(__dirname, '../db.json') },
+  { name: 'SQLite Adapter', adapter: require('../adapters/sqlite-adapter'), dbPath: path.join(__dirname, '../blaze.db') },
+  //{ name: 'MongoDB Adapter', adapter: require('../adapters/mongo-adapter'), dbPath: null } // MongoDB doesn't use a local dbPath
+];
+
+// Test suite for all adapters
+describe.each(adapters)('BlazeDB with $name', ({ adapter, dbPath }) => {
   let blazeDB;
 
   beforeAll(async () => {
     blazeDB = new BlazeDB(new adapter());
-    // Initialize the db.json file with schema and data for testing
+    // Initialize the database file with schema and data for testing if required
     const schemaInstance = new BlazeDBSchema(blazeDB);
     const userModel = {
       name: 'User',
@@ -21,33 +27,55 @@ describe('BlazeDB', () => {
       }
     };
 
-    
     // Dynamically create schema instead of hardcoding it
+
+    // if(adapter.name == 'SQLite Adapter'){
+    //   console.log("SCHEMA PASS DATA:", userModel)
+    //   schemaInstance.addModel(userModel);
+    // }
     schemaInstance.addModel(userModel);
     await schemaInstance.createSchema();
   });
 
   afterAll(async () => {
-    // Clean up the test database file after all tests are complete
-    await fs.unlink(dbPath);
+    // Clean up the test database file after all tests are complete if dbPath exists (skip for MongoDB)
+    if (dbPath) {
+      try {
+        await fs.unlink(dbPath);
+      } catch (error) {
+        console.error(`Error cleaning up the database at ${dbPath}:`, error);
+      }
+    }
   });
 
   test('should create a schema', async () => {
-    let dbData = await fs.readFile(dbPath, 'utf8');
-    let jsonData = JSON.parse(dbData);
+    if (dbPath) {
+      const dbData = await fs.readFile(dbPath, 'utf8');
+      const jsonData = JSON.parse(dbData);
 
-    // Check if schema properties are correctly set
-    expect(jsonData.schema.properties).toHaveProperty('id');
-    expect(jsonData.schema.properties).toHaveProperty('name');
-    expect(jsonData.schema.properties).toHaveProperty('age');
+      // Check if schema properties are correctly set
+      expect(jsonData.schema.properties).toHaveProperty('id');
+      expect(jsonData.schema.properties).toHaveProperty('name');
+      expect(jsonData.schema.properties).toHaveProperty('age');
+    } else {
+      // For non-file-based databases, directly check the schema
+      const schemaData = await blazeDB.getSchema();
+      expect(schemaData.properties).toHaveProperty('id');
+      expect(schemaData.properties).toHaveProperty('name');
+      expect(schemaData.properties).toHaveProperty('age');
+    }
   });
 
   test('should add a user', async () => {
     const newUser = { id: 1, name: 'John Doe', age: 30 };
     await blazeDB.setData(newUser);
-    let dbrData = await fs.readFile(dbPath, 'utf8');
-    let jsonData = JSON.parse(dbrData);
-    console.log("Data:", jsonData);
+
+    if (dbPath) {
+      const dbData = await fs.readFile(dbPath, 'utf8');
+      const jsonData = JSON.parse(dbData);
+      console.log("Data:", jsonData);
+    }
+
     const dbData = await blazeDB.getData();
     expect(dbData).toContainEqual(newUser);
   });

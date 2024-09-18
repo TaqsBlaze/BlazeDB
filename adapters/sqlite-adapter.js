@@ -1,79 +1,72 @@
-// adapters/sqlite-adapter.js
-const sqlite3 = require('sqlite3');
+const sqlite3 = require('sqlite3').verbose();
 const { open } = require('sqlite');
-const BaseAdapter = require('./base-adapter');
 
-class SQLiteAdapter extends BaseAdapter {
-  constructor(dbPath = './blaze.db') {
-    super();
-    this.dbPath = dbPath;
+class SQLiteAdapter {
+  constructor() {
+    this.dbPromise = open({
+      filename: '../db.sqlite',
+      driver: sqlite3.Database
+    });
   }
 
-  async connect() {
+  async init() {
+    this.db = await this.dbPromise;
+  }
+
+  async createSchema({ tableName, properties }) {
+    console.log("SCHEMA PASSED:", { tableName, properties });
+
     if (!this.db) {
-      this.db = await open({
-        filename: this.dbPath,
-        driver: sqlite3.Database
-      });
+      await this.init();
     }
-  }
 
-  async getData() {
-    await this.connect();
-    const data = await this.db.all('SELECT * FROM data');
-    return data;
-  }
+    const columns = Object.entries(properties).map(([key, value]) => {
+      const type = value.type === 'string' ? 'TEXT' :
+                   value.type === 'integer' ? 'INTEGER' :
+                   value.type === 'boolean' ? 'BOOLEAN' : 'TEXT';
+      return `${key} ${type}`;
+    }).join(', ');
 
-  async setData(newData) {
-    await this.connect();
-    const keys = Object.keys(newData).join(', ');
-    const values = Object.values(newData).map(() => '?').join(', ');
-    const query = `INSERT INTO data (${keys}) VALUES (${values})`;
-
-    await this.db.run(query, ...Object.values(newData));
-  }
-
-  async updateData(id, updatedData) {
-    await this.connect();
-    const fields = Object.keys(updatedData).map(key => `${key} = ?`).join(', ');
-    const query = `UPDATE data SET ${fields} WHERE id = ?`;
-
-    await this.db.run(query, ...Object.values(updatedData), id);
-  }
-
-  async deleteData(id) {
-    await this.connect();
-    await this.db.run('DELETE FROM data WHERE id = ?', id);
-  }
-
-  async createSchema(schema) {
-    await this.connect();
-
-    // Check if table exists, if not create it
-    const tableExists = await this.db.get(`SELECT name FROM sqlite_master WHERE type='table' AND name='data'`);
-
+    // Check if table exists
+    const tableExists = await this.db.get(`SELECT name FROM sqlite_master WHERE type='table' AND name='${tableName}'`);
     if (!tableExists) {
-      const fields = Object.entries(schema.properties).map(([key, value]) => {
-        if (value.type === 'integer') return `${key} INTEGER`;
-        if (value.type === 'string') return `${key} TEXT`;
-        if (value.type === 'boolean') return `${key} INTEGER`; // SQLite doesn't have boolean, so we use INTEGER
-        return `${key} TEXT`; // Default to TEXT if type is unrecognized
-      }).join(', ');
-
-      const query = `CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY, ${fields})`;
-
-      await this.db.exec(query);
-      console.log('Schema created successfully.');
-    } else {
-      console.log('Table already exists.');
+      await this.db.run(`CREATE TABLE ${tableName} (${columns})`);
     }
   }
 
-  async close() {
-    if (this.db) {
-      await this.db.close();
-      this.db = null;
+  async insert(tableName, data) {
+    if (!this.db) {
+      await this.init();
     }
+
+    const columns = Object.keys(data).join(', ');
+    const placeholders = Object.keys(data).map(() => '?').join(', ');
+    await this.db.run(`INSERT INTO ${tableName} (${columns}) VALUES (${placeholders})`, Object.values(data));
+  }
+
+  async update(tableName, id, data) {
+    if (!this.db) {
+      await this.init();
+    }
+
+    const setClause = Object.keys(data).map(key => `${key} = ?`).join(', ');
+    await this.db.run(`UPDATE ${tableName} SET ${setClause} WHERE id = ?`, [...Object.values(data), id]);
+  }
+
+  async delete(tableName, id) {
+    if (!this.db) {
+      await this.init();
+    }
+
+    await this.db.run(`DELETE FROM ${tableName} WHERE id = ?`, [id]);
+  }
+
+  async get(tableName) {
+    if (!this.db) {
+      await this.init();
+    }
+
+    return this.db.all(`SELECT * FROM ${tableName}`);
   }
 }
 

@@ -4,7 +4,6 @@ class BlazeDBSchema {
     constructor(blazeDBInstance) {
         this.BlazeDB = blazeDBInstance;
         this.models = [];
-        this.properties = {};
     }
 
     addModel(model) {
@@ -12,15 +11,14 @@ class BlazeDBSchema {
     }
 
     async createSchema() {
-        const schema = {
-            $schema: 'http://json-schema.org/draft-07/schema#',
-            type: 'object',
-            properties: {},
-            required: [] // Initialize with an empty array
-        };
+        this.models.forEach(async (model) => {
+            const schema = {
+                $schema: 'http://json-schema.org/draft-07/schema#',
+                type: 'object',
+                properties: {},
+                required: []
+            };
 
-        // Add fields to the schema
-        this.models.forEach((model) => {
             Object.keys(model.fields).forEach((field) => {
                 const fieldType = model.fields[field].type;
                 const fieldSchema = {};
@@ -35,17 +33,15 @@ class BlazeDBSchema {
 
                 schema.properties[field] = fieldSchema;
 
-                // Collect required fields
-                if (model.fields[field].required) {
+                if (model.fields?.[field]?.required) {
                     if (!schema.required.includes(field)) {
                         schema.required.push(field);
                     }
                 }
             });
-        });
 
-        // Write the schema to the database
-        await this.BlazeDB.createSchema(schema);
+            await this.BlazeDB.createSchema({ tableName: model.name, ...schema });
+        });
     }
 }
 

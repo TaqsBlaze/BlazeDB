@@ -72,54 +72,67 @@ db.setData(user1).then((error) =>{
 
 # Using Adapters
 
-## sqlite Adapter
+## json Adapter
 
 ### How to us
 
-First of all you need to install the sqlite package
-```
-npm install sqlite3 sqlite
-```
 
 ```
-// app.js
-const BlazeDB = require('./blazedb');
-const SQLiteAdapter = require('./adapters/sqlite-adapter');
+const BlazeDB = require('./blazedb'); // Import BlazeDB
+const JSONAdapter = require('./adapters/json-adapter'); // Import the JSON adapter
+const BlazeDBSchema = require('./schema/db-schema'); // Import the schema handler
+const fs = require('fs').promises;
+const path = require('path');
 
-// Using SQLite adapter
-const blazeDBWithSQLite = new BlazeDB(new SQLiteAdapter());
+const dbPath = path.join(__dirname, 'db.json'); // Path to the JSON database file
 
-// Create a schema
-const schema = {
-  properties: {
-    id: { type: 'integer' },
-    name: { type: 'string' },
-    age: { type: 'integer' }
-  }
-};
+async function main() {
+  // Initialize BlazeDB with the JSONAdapter
+  const blazeDB = new BlazeDB(new JSONAdapter(dbPath));
 
-async function run() {
-  await blazeDBWithSQLite.createSchema(schema);
+  // Define your schema (or load it from some external source)
+  const userModel = {
+    name: 'User',
+    properties: {
+      id: { type: 'integer', required: true },
+      name: { type: 'string', required: true },
+      age: { type: 'integer', required: false }
+    }
+  };
 
-  // Add some data
-  await blazeDBWithSQLite.setData({ id: 1, name: 'Blaze', age: 30 });
-  await blazeDBWithSQLite.setData({ id: 2, name: 'John Doe', age: 25 });
+  // Create schema handler
+  const schemaInstance = new BlazeDBSchema(blazeDB);
+  schemaInstance.addModel(userModel);
 
-  // Get data
-  const data = await blazeDBWithSQLite.getData();
-  console.log(data);
+  // Create or load schema from the database
+  await schemaInstance.createSchema();
 
-  // Update a user
-  await blazeDBWithSQLite.updateData(1, { name: 'Blaze Updated' });
+  // Example usage: Add a user
+  const newUser = { id: 1, name: 'Blaze', age: 30 };
+  await blazeDB.setData(newUser);
 
-  // Delete a user
-  await blazeDBWithSQLite.deleteData(2);
+  // Fetch all users from the database
+  const users = await blazeDB.getData();
+  console.log('Users:', users);
 
-  // Close the connection when done
-  await blazeDBWithSQLite.close();
+  // Example usage: Update a user
+  const updatedUser = { name: 'Blaze Updated' };
+  await blazeDB.updateData(1, updatedUser);
+
+  // Fetch updated users from the database
+  const updatedUsers = await blazeDB.getData();
+  console.log('Updated Users:', updatedUsers);
+
+  // Example usage: Delete a user
+  await blazeDB.deleteData(1);
+  const remainingUsers = await blazeDB.getData();
+  console.log('Remaining Users:', remainingUsers);
 }
 
-run();
+main().catch((error) => {
+  console.error('Error:', error);
+});
+
 ```
 
 
