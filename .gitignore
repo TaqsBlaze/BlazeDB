@@ -26,6 +26,10 @@ coverage
 # nyc test coverage
 .nyc_output
 
+#storage files
+.db 
+.sqlite
+.json
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 

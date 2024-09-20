@@ -1,18 +1,18 @@
 // adapters/base-adapter.js
 class BaseAdapter {
-    async getData() {
+    async get() {
       throw new Error('Method getData() must be implemented');
     }
   
-    async setData(newData) {
+    async insert(newData) {
       throw new Error('Method setData() must be implemented');
     }
   
-    async updateData(id, updatedData) {
+    async update(id, updatedData) {
       throw new Error('Method updateData() must be implemented');
     }
   
-    async deleteData(id) {
+    async delete(id) {
       throw new Error('Method deleteData() must be implemented');
     }
   

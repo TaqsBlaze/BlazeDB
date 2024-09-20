@@ -4,20 +4,20 @@ class BlazeDB {
     this.adapter = adapter;
   }
 
-  async getData() {
-    return this.adapter.getData();
+  async get() {
+    return this.adapter.get();
   }
 
-  async setData(newData) {
-    return this.adapter.setData(newData);
+  async insert(newData) {
+    return this.adapter.insert(newData);
   }
 
-  async updateData(id, updatedData) {
-    return this.adapter.updateData(id, updatedData);
+  async update(id, updatedData) {
+    return this.adapter.update(id, updatedData);
   }
 
-  async deleteData(id) {
-    return this.adapter.deleteData(id);
+  async delete(id) {
+    return this.adapter.delete(id);
   }
 
   async createSchema(schema) {

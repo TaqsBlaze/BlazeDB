@@ -8,7 +8,7 @@ class JSONAdapter extends BaseAdapter {
     this.dbPath = path.join(__dirname, '../db.json');
   }
 
-  async getData() {
+  async get() {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
@@ -19,7 +19,7 @@ class JSONAdapter extends BaseAdapter {
     }
   }
 
-  async setData(newData) {
+  async insert(newData) {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
@@ -32,7 +32,7 @@ class JSONAdapter extends BaseAdapter {
     }
   }
 
-  async updateData(id, updatedData) {
+  async update(id, updatedData) {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
@@ -46,7 +46,7 @@ class JSONAdapter extends BaseAdapter {
     }
   }
 
-  async deleteData(id) {
+  async delete(id) {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
