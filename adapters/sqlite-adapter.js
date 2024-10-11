@@ -13,6 +13,10 @@ class SQLiteAdapter {
     this.db = await this.dbPromise;
   }
 
+  async close(){
+    this.db.close();
+  }
+  
   async createSchema({ tableName, properties }) {
     console.log("SCHEMA PASSED:", { tableName, properties });
 

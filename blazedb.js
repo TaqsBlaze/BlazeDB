@@ -23,6 +23,12 @@ class BlazeDB {
   async createSchema(schema) {
     return this.adapter.createSchema(schema);
   }
+
+  async close(){
+    return this.adapter.close()
+  }
 }
+
+  
 
 module.exports = BlazeDB;

@@ -19,6 +19,10 @@ class BaseAdapter {
     async createSchema(schema) {
       throw new Error('Method createSchema() must be implemented');
     }
+
+    async close(){
+      throw new Error('Method close() must be implemented');
+    }
   }
   
   module.exports = BaseAdapter;

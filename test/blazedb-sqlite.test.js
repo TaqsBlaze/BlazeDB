@@ -31,7 +31,7 @@ describe('BlazeDB with SQLite Adapter', () => {
 
   afterAll(async () => {
     if (adapter.dbPath) {
-      await db.close();  // Ensure the database connection is closed
+      await blazeDB.close();  // Ensure the database connection is closed
       try {
         await fs.unlink(adapter.dbPath);
       } catch (error) {
@@ -40,7 +40,7 @@ describe('BlazeDB with SQLite Adapter', () => {
     }
   });
 
-  
+
   test('should create a schema', async () => {
     const db = new sqlite3.Database(adapter.dbPath);
     db.serialize(() => {
@@ -87,6 +87,6 @@ describe('BlazeDB with SQLite Adapter', () => {
         expect(row).toBeUndefined();
       });
     });
-    db.close();
+    blazeDB.close();
   });
 });
