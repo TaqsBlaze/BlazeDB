@@ -4,32 +4,6 @@
 `npm i blazedb@latest`
 
 
-## Creating Schema
-
-```
-const blazedb = require('blazedb');
-const dbschema = require('blazedb/schema');
-
-const db = new blazedb();
-
-//creating a model
-const model = {
-    id:'id',
-    fields:{
-        name:{type:'string',required:true},
-        age:{type:'number',required:true}
-    },
-    options:{}
-}
-
-
-//creating schema
-const schema = new dbschema(db);
-
-schema.addModel(model);
-schame.createSchema();
-```
-
 ## Creating user
 
 ```
@@ -109,23 +83,23 @@ async function main() {
 
   // Example usage: Add a user
   const newUser = { id: 1, name: 'Blaze', age: 30 };
-  await blazeDB.setData(newUser);
+  await blazeDB.insert(newUser);
 
   // Fetch all users from the database
-  const users = await blazeDB.getData();
+  const users = await blazeDB.get();
   console.log('Users:', users);
 
   // Example usage: Update a user
   const updatedUser = { name: 'Blaze Updated' };
-  await blazeDB.updateData(1, updatedUser);
+  await blazeDB.update(1, updatedUser);
 
   // Fetch updated users from the database
-  const updatedUsers = await blazeDB.getData();
+  const updatedUsers = await blazeDB.get();
   console.log('Updated Users:', updatedUsers);
 
   // Example usage: Delete a user
-  await blazeDB.deleteData(1);
-  const remainingUsers = await blazeDB.getData();
+  await blazeDB.delete(1);
+  const remainingUsers = await blazeDB.get();
   console.log('Remaining Users:', remainingUsers);
 }
 
@@ -134,8 +108,11 @@ main().catch((error) => {
 });
 
 ```
-
-
+### Adaptors:
+```
+I have decided to remove sqlite and mongo db adaptors as they are currently not stable
+these adaptors will be added incrimentally as they become stable
+```
 
 ## Contributing
 
