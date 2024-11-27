@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
-const BaseAdapter = require('./base-adapter');
+const BaseAdapter = require('./baseAdapter');
 
 class JSONAdapter extends BaseAdapter {
   constructor() {

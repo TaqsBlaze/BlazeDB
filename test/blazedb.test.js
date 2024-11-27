@@ -1,16 +1,16 @@
 const BlazeDB = require('../blazedb'); 
-const BlazeDBSchema = require('../schema/db-schema');
+const BlazeDBSchema = require('../schema/schema');
 const fs = require('fs').promises;
 const path = require('path');
 
 // Define JSON Adapter
-const adapter = { name: 'JSON Adapter', adapter: require('../adapters/json-adapter'), dbPath: path.join(__dirname, '../db.json') };
-
+const adapter = require('../adapters/jsonAdapter');
+const dbPath = path.join(__dirname, '../db.json');
 describe('BlazeDB with JSON Adapter', () => {
   let blazeDB;
 
   beforeAll(async () => {
-    blazeDB = new BlazeDB(new adapter.adapter());
+    blazeDB = new BlazeDB.Json(new adapter());
     const schemaInstance = new BlazeDBSchema(blazeDB);
     const userModel = {
       name: 'User',
@@ -26,17 +26,17 @@ describe('BlazeDB with JSON Adapter', () => {
   });
 
   afterAll(async () => {
-    if (adapter.dbPath) {
+    if (dbPath) {
       try {
-        await fs.unlink(adapter.dbPath);
+        await fs.unlink(dbPath);
       } catch (error) {
-        console.error(`Error cleaning up the database at ${adapter.dbPath}:`, error);
+        console.error(`Error cleaning up the database at ${dbPath}:`, error);
       }
     }
   });
 
   test('should create a schema', async () => {
-    const dbData = await fs.readFile(adapter.dbPath, 'utf8');
+    const dbData = await fs.readFile(dbPath, 'utf8');
     const jsonData = JSON.parse(dbData);
 
     expect(jsonData.schema.properties).toHaveProperty('id');
@@ -48,7 +48,7 @@ describe('BlazeDB with JSON Adapter', () => {
     const newUser = { id: 1, name: 'John Doe', age: 30 };
     await blazeDB.insert(newUser);
 
-    const dbData = await fs.readFile(adapter.dbPath, 'utf8');
+    const dbData = await fs.readFile(dbPath, 'utf8');
     const jsonData = JSON.parse(dbData);
     
     expect(jsonData.data).toContainEqual(newUser);
