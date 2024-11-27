@@ -2,8 +2,8 @@ const sqlite3 = require('sqlite3').verbose();
 const { open } = require('sqlite');
 
 class SQLiteAdapter {
-  constructor() {
-    this.dbPath = 'blaze.sqlite'; // Add this
+  constructor(dbPath) {
+    this.dbPath = dbPath;
     this.dbPromise = open({
       filename: this.dbPath,
       driver: sqlite3.Database

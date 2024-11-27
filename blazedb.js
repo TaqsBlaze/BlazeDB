@@ -1,4 +1,5 @@
 class Json {
+  // Json Adapter
   constructor(adapter) {
     this.adapter = adapter;
   }
