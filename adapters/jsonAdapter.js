@@ -3,9 +3,9 @@ const path = require('path');
 const BaseAdapter = require('./baseAdapter');
 
 class JSONAdapter extends BaseAdapter {
-  constructor() {
+  constructor(dbPath) {
     super();
-    this.dbPath = path.join(__dirname, '../db.json');
+    this.dbPath = path.join(__dirname, dbPath);
   }
 
   async get() {
@@ -30,7 +30,7 @@ class JSONAdapter extends BaseAdapter {
       } else {
         newData.id = 1 //Setting default first value id
       }
-      
+
       jsonData.data.push(newData);
       await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
     } catch (err) {
