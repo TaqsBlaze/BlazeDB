@@ -1,0 +1,36 @@
+name: Publish to npm
+
+on:
+  release:
+    branches:
+      - main  # Deploy only when pushing to the `main` branch
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16  # Use the Node.js version you prefer
+        cache: 'npm'
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Step 4: Lint or test (optional, can be removed)
+    - name: Run tests
+      run: npm test
+
+    # Step 5: Publish to npm
+    - name: Publish to npm
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
