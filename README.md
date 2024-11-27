@@ -52,60 +52,63 @@ db.setData(user1).then((error) =>{
 
 
 ```
-const BlazeDB = require('./blazedb'); // Import BlazeDB
-const JSONAdapter = require('./adapters/json-adapter'); // Import the JSON adapter
-const BlazeDBSchema = require('./schema/db-schema'); // Import the schema handler
+const BlazeDB = require('../blazedb'); 
+const BlazeDBSchema = require('../schema/schema');
 const fs = require('fs').promises;
 const path = require('path');
 
+// Define JSON Adapter
+const adapter = require('../adapters/jsonAdapter');
+const dbPath = path.join(__dirname, '../db.json');
+
+let blazeDB;
 const dbPath = path.join(__dirname, 'db.json'); // Path to the JSON database file
-
-async function main() {
-  // Initialize BlazeDB with the JSONAdapter
-  const blazeDB = new BlazeDB(new JSONAdapter(dbPath));
-
-  // Define your schema (or load it from some external source)
-  const userModel = {
-    name: 'User',
-    properties: {
-      id: { type: 'integer', required: true },
-      name: { type: 'string', required: true },
-      age: { type: 'integer', required: false }
-    }
-  };
+blazeDB = new BlazeDB.Json(new adapter());
+const schemaInstance = new BlazeDBSchema(blazeDB);
+const userModel = {
+  name: 'User',
+  fields: {
+  id: { type: 'number', required: true },
+  name: { type: 'string', required: true },
+  age: { type: 'number', required: false }
+  }
+};
 
   // Create schema handler
-  const schemaInstance = new BlazeDBSchema(blazeDB);
   schemaInstance.addModel(userModel);
-
-  // Create or load schema from the database
   await schemaInstance.createSchema();
 
+ 
+
   // Example usage: Add a user
-  const newUser = { id: 1, name: 'Blaze', age: 30 };
-  await blazeDB.insert(newUser);
+const newUser = { id: 1, name: 'John Doe', age: 30 };
+await blazeDB.insert(newUser);
 
-  // Fetch all users from the database
-  const users = await blazeDB.get();
-  console.log('Users:', users);
+const dbData = await fs.readFile(dbPath, 'utf8');
+const jsonData = JSON.parse(dbData);
 
-  // Example usage: Update a user
-  const updatedUser = { name: 'Blaze Updated' };
-  await blazeDB.update(1, updatedUser);
+// Fetch all users from the database
+const users = await blazeDB.get();
+console.log('Users:', users);
 
-  // Fetch updated users from the database
-  const updatedUsers = await blazeDB.get();
-  console.log('Updated Users:', updatedUsers);
+// Example usage: Update a user
+const updatedUser = { name: 'Blaze' };
+await blazeDB.update(1, updatedUser);
 
-  // Example usage: Delete a user
-  await blazeDB.delete(1);
-  const remainingUsers = await blazeDB.get();
-  console.log('Remaining Users:', remainingUsers);
-}
+const dbData = await blazeDB.get();
+const updatedUserData = dbData.find(user => user.id === 1);
 
-main().catch((error) => {
-  console.error('Error:', error);
-});
+// Fetch updated users from the database
+const updatedUsers = await blazeDB.get();
+console.log('Updated Users:', updatedUsers);
+
+// Example usage: Delete a user
+await blazeDB.delete(1);
+
+const dbData = await blazeDB.get();
+const deletedUserData = dbData.find(user => user.id === 1);
+
+
 
 ```
 ### Adaptors:
