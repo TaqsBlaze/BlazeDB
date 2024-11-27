@@ -174,6 +174,6 @@ If you encounter any problems, feel free to open an issue in the issues tab. Ple
 ### Discussion
 
 For any major changes, please create an issue first to discuss it. This helps maintainers and collaborators understand your intentions.
-
-
+---
+new featers soon
 Thank you for your interest in contributing!
