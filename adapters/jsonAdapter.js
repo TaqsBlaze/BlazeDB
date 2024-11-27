@@ -24,6 +24,13 @@ class JSONAdapter extends BaseAdapter {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
       jsonData.data = jsonData.data || [];
+
+      if (!jsonData.length <= 0){
+        newData.id = jsonData.data[jsonData.data.length - 1].id + 1 //Auto increment id
+      } else {
+        newData.id = 1 //Setting default first value id
+      }
+      
       jsonData.data.push(newData);
       await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
     } catch (err) {

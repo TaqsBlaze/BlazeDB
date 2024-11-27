@@ -2,7 +2,7 @@
   "name": "blazedb",
   "version": "1.0.8",
   "description": "BlazeDB is highly flexible ORM suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages and the flexibility to use a database of your choice",
-  "main": "index.js",
+  "main": "blazedb.js",
   "scripts": {
     "test": "jest --coverage --detectOpenHandles"
   },
@@ -14,7 +14,10 @@
     "db",
     "database",
     "flexible",
-    "ORM"
+    "ORM",
+    "sqlite",
+    "index",
+    "json"
   ],
   "author": "Tanaka Chinengundu",
   "license": "MIT",
@@ -24,7 +27,10 @@
   "homepage": "https://github.com/taqsblaze/BlazeDB#readme",
   "exports": {
     ".": "./blazedb.js",
-    "./schema": "./schema/db-schema.js"
+    "./schema": "./schema/schema.js",
+    ".adapters/baseAdapter": "./adapters/baseAdapter.js",
+    "./adapters/jsonAdapter": "./adapters/jsonAdapter.js",
+    "./adapters/sqliteAdapter": "./adapters/sqliteAdapter.js"
   },
   "dependencies": {
     "jest": "^29.7.0",
