@@ -68,6 +68,21 @@ class JSONAdapter extends BaseAdapter {
   async createSchema(schema) {
 
     try {
+      const fileContent = await fs.readFile(this.dbPath, 'utf-8');
+      dbData = JSON.parse(fileContent);
+    } catch (err) {
+      // If file doesn't exist, start fresh
+      if (err.code !== 'ENOENT') {
+        throw err;
+      }
+    }
+
+    // Add the new schema to the database object
+    if (dbData[schema.name]) {
+      throw new Error(`Schema with name '${schema.name}' already exists.`);
+    }
+    
+    try {
       // Validate the schema object
       if (!schema || !schema.name || !schema.properties) {
         throw new Error('Schema must include a name and properties.');
