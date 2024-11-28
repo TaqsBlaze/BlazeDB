@@ -1,0 +1,4 @@
+test/
+coverage/
+.github/
+jest.config.js
