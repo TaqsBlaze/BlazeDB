@@ -66,17 +66,31 @@ class JSONAdapter extends BaseAdapter {
   }
 
   async createSchema(schema) {
+
     try {
+      // Validate the schema object
+      if (!schema || !schema.name || !schema.properties) {
+        throw new Error('Schema must include a name and properties.');
+      }
+  
+      // Format the schema structure
       const formattedSchema = {
-        properties: schema.properties || {}
+        schema: {
+          properties: schema.properties
+        },
+        [schema.name]: [] // Dynamically set the table name with an empty array
       };
-      await fs.writeFile(this.dbPath, JSON.stringify({ schema: formattedSchema, data: [] }, null, 2));
+  
+      // Write the schema to the database file
+      await fs.writeFile(this.dbPath, JSON.stringify(formattedSchema, null, 2));
       console.log('Schema created successfully.');
+
     } catch (err) {
-      console.error('Error creating schema:', err);
+      console.error('Error creating schema:', err.message);
       throw err;
     }
   }
 }
+  
 
 module.exports = JSONAdapter;
