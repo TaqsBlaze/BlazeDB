@@ -1,6 +1,6 @@
 {
   "name": "blazedb",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "BlazeDB is highly flexible ORM suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages and the flexibility to use a database of your choice",
   "main": "blazedb.js",
   "scripts": {
