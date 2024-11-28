@@ -3,9 +3,9 @@ const path = require('path');
 const BaseAdapter = require('./baseAdapter');
 
 class JSONAdapter extends BaseAdapter {
-  constructor(dbPath) {
+  constructor(dbpath) {
     super();
-    this.dbPath = path.join(__dirname, dbPath);
+    this.dbPath = dbpath;
   }
 
   async get() {
@@ -25,12 +25,11 @@ class JSONAdapter extends BaseAdapter {
       const jsonData = JSON.parse(dbData);
       jsonData.data = jsonData.data || [];
 
-      if (!jsonData.length <= 0){
-        newData.id = jsonData.data[jsonData.data.length - 1].id + 1 //Auto increment id
-      } else {
-        newData.id = 1 //Setting default first value id
+      if(!jsonData.data.length <= 0){
+          newData.id = jsonData.data[jsonData.data.length - 1].id + 1 //Auto increment id
+      }else{
+          newData.id = 1 //Set default id
       }
-
       jsonData.data.push(newData);
       await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
     } catch (err) {
@@ -66,47 +65,18 @@ class JSONAdapter extends BaseAdapter {
   }
 
   async createSchema(schema) {
-
     try {
-      const fileContent = await fs.readFile(this.dbPath, 'utf-8');
-      dbData = JSON.parse(fileContent);
-      // Add the new schema to the database object
-      if (dbData[schema.name]) {
-        throw new Error(`Schema with name '${schema.name}' already exists.`);
-      }
-    } catch (err) {
-      // If file doesn't exist, start fresh
-      if (err.code !== 'ENOENT') {
-        throw err;
-      }
-    }
-
-    
-    
-    try {
-      // Validate the schema object
-      if (!schema || !schema.name || !schema.properties) {
-        throw new Error('Schema must include a name and properties.');
-      }
-  
-      // Format the schema structure
       const formattedSchema = {
-        schema: {
-          properties: schema.properties
-        },
-        [schema.name]: [] // Dynamically set the table name with an empty array
+        properties: schema.properties || {},
+        [schema.name]: []
       };
-  
-      // Write the schema to the database file
-      await fs.writeFile(this.dbPath, JSON.stringify(formattedSchema, null, 2));
+      await fs.writeFile(this.dbPath, JSON.stringify({ schema: formattedSchema, data: [] }, null, 2));
       console.log('Schema created successfully.');
-
     } catch (err) {
-      console.error('Error creating schema:', err.message);
+      console.error('Error creating schema:', err);
       throw err;
     }
   }
 }
-  
 
 module.exports = JSONAdapter;
