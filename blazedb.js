@@ -4,20 +4,20 @@ class Json {
     this.adapter = adapter;
   }
 
-  async get() {
-    return this.adapter.get();
+  async get(tableName) {
+    return this.adapter.get(tableName);
   }
 
-  async insert(newData) {
-    return this.adapter.insert(newData);
+  async insert(tableName, newData) {
+    return this.adapter.insert(tableName, newData);
   }
 
-  async update(id, updatedData) {
-    return this.adapter.update(id, updatedData);
+  async update(tableName, id, updatedData) {
+    return this.adapter.update(tableName, id, updatedData);
   }
 
-  async delete(id) {
-    return this.adapter.delete(id);
+  async delete(tableName, id) {
+    return this.adapter.delete(tableName, id);
   }
 
   async createSchema(schema) {
@@ -37,8 +37,8 @@ class Sql {
     this.adapter = adapter;
   }
 
-  async get() {
-    return this.adapter.get();
+  async get(tableName) {
+    return this.adapter.get(tableName);
   }
 
   async insert(tableName, newData) {

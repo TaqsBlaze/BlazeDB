@@ -8,30 +8,30 @@ class JSONAdapter extends BaseAdapter {
     this.dbPath = path.join(__dirname, dbPath);
   }
 
-  async get() {
+  async get(tableName) {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
-      return jsonData.data || [];
+      return jsonData["schema"][tableName] || [];
     } catch (err) {
       console.error('Error reading data:', err);
       throw err;
     }
   }
 
-  async insert(newData) {
+  async insert(tableName, newData) {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
-      jsonData.data = jsonData.data || [];
+      jsonData["schema"][tableName] = jsonData["schema"][tableName] || [];
 
-      if (!jsonData.length <= 0){
-        newData.id = jsonData.data[jsonData.data.length - 1].id + 1 //Auto increment id
+      if (!jsonData["schema"][tableName].length <= 0){
+        newData.id = jsonData["schema"][tableName][jsonData["schema"][tableName].length - 1].id + 1 //Auto increment id
       } else {
         newData.id = 1 //Setting default first value id
       }
 
-      jsonData.data.push(newData);
+      jsonData["schema"][tableName].push(newData);
       await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
     } catch (err) {
       console.error('Error writing data:', err);
@@ -39,11 +39,11 @@ class JSONAdapter extends BaseAdapter {
     }
   }
 
-  async update(id, updatedData) {
+  async update(tableName, id, updatedData) {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
-      jsonData.data = (jsonData.data || []).map(item =>
+      jsonData["schema"][tableName] = (jsonData["schema"][tableName] || []).map(item =>
         item.id === id ? { ...item, ...updatedData } : item
       );
       await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
@@ -53,11 +53,11 @@ class JSONAdapter extends BaseAdapter {
     }
   }
 
-  async delete(id) {
+  async delete(tableName, id) {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
-      jsonData.data = (jsonData.data || []).filter(item => item.id !== id);
+      jsonData.data = (jsonData["schema"][tableName] || []).filter(item => item.id !== id);
       await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
     } catch (err) {
       console.error('Error deleting data:', err);
