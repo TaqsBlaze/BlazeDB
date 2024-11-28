@@ -12,7 +12,7 @@ class JSONAdapter extends BaseAdapter {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
-      return jsonData.data || [];
+      return jsonData["schema"][tableName] || [];
     } catch (err) {
       console.error('Error reading data:', err);
       throw err;
@@ -26,9 +26,7 @@ class JSONAdapter extends BaseAdapter {
     // Read the database file
     const dbData = await fs.readFile(this.dbPath, 'utf8');
     const jsonData = JSON.parse(dbData);
-	
-	console.log(">>>",newData, tableName)
-	console.log(jsonData["schema"][tableName])
+
     // Check if the table exists
     if (!jsonData["schema"][tableName]) {
       throw new Error(`Table '${tableName}' does not exist.`);
