@@ -55,11 +55,11 @@ class JSONAdapter extends BaseAdapter {
     }
   }
 
-  async update(id, updatedData) {
+  async update(tableName, id, updatedData) {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
-      jsonData.data = (jsonData.data || []).map(item =>
+      jsonData.data = (jsonData["schema"][tableName] || []).map(item =>
         item.id === id ? { ...item, ...updatedData } : item
       );
       await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
