@@ -3,9 +3,9 @@ const path = require('path');
 const BaseAdapter = require('./baseAdapter');
 
 class JSONAdapter extends BaseAdapter {
-  constructor(dbPath) {
+  constructor(dbpath) {
     super();
-    this.dbPath = path.join(__dirname, dbPath);
+    this.dbPath = dbpath;
   }
 
   async get(tableName) {
@@ -20,19 +20,35 @@ class JSONAdapter extends BaseAdapter {
   }
 
   async insert(tableName, newData) {
+
     try {
+      // Read the database file
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
-      jsonData["schema"][tableName] = jsonData["schema"][tableName] || [];
-
-      if (!jsonData["schema"][tableName].length <= 0){
-        newData.id = jsonData["schema"][tableName][jsonData["schema"][tableName].length - 1].id + 1 //Auto increment id
-      } else {
-        newData.id = 1 //Setting default first value id
+    
+      // Check if the table exists
+      if (!jsonData["schema"][tableName]) {
+        throw new Error(`Table '${tableName}' does not exist.`);
       }
-
-      jsonData["schema"][tableName].push(newData);
+  
+      // Set the default data array if it doesn't exist
+      const tableData = jsonData['schema'][tableName];
+    
+      // Auto-increment the id or set default id
+      if (!tableData.length <= 0) {
+        newData.id = tableData[tableData.length - 1].id + 1; // Auto-increment id
+      } else {
+      console.log(tableName)
+      console.log(newData)
+        newData.id = 1; // Set default id
+      }
+  
+      // Add the new data to the table
+      tableData.push(newData);
+  
+      // Write the updated data back to the file
       await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
+      console.log(`Data successfully inserted into '${tableName}' table.`);
     } catch (err) {
       console.error('Error writing data:', err);
       throw err;
@@ -43,7 +59,7 @@ class JSONAdapter extends BaseAdapter {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
-      jsonData["schema"][tableName] = (jsonData["schema"][tableName] || []).map(item =>
+      jsonData.data = (jsonData["schema"][tableName] || []).map(item =>
         item.id === id ? { ...item, ...updatedData } : item
       );
       await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
@@ -66,46 +82,18 @@ class JSONAdapter extends BaseAdapter {
   }
 
   async createSchema(schema) {
-
     try {
-      const fileContent = await fs.readFile(this.dbPath, 'utf-8');
-      dbData = JSON.parse(fileContent);
-    } catch (err) {
-      // If file doesn't exist, start fresh
-      if (err.code !== 'ENOENT') {
-        throw err;
-      }
-    }
-
-    // Add the new schema to the database object
-    if (dbData[schema.name]) {
-      throw new Error(`Schema with name '${schema.name}' already exists.`);
-    }
-    
-    try {
-      // Validate the schema object
-      if (!schema || !schema.name || !schema.properties) {
-        throw new Error('Schema must include a name and properties.');
-      }
-  
-      // Format the schema structure
       const formattedSchema = {
-        schema: {
-          properties: schema.properties
-        },
-        [schema.name]: [] // Dynamically set the table name with an empty array
+        properties: schema.properties || {},
+        [schema.name]: []
       };
-  
-      // Write the schema to the database file
-      await fs.writeFile(this.dbPath, JSON.stringify(formattedSchema, null, 2));
+      await fs.writeFile(this.dbPath, JSON.stringify({ schema: formattedSchema, data: [] }, null, 2));
       console.log('Schema created successfully.');
-
     } catch (err) {
-      console.error('Error creating schema:', err.message);
+      console.error('Error creating schema:', err);
       throw err;
     }
   }
 }
-  
 
 module.exports = JSONAdapter;
