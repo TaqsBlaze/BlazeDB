@@ -1,26 +1,25 @@
-const BlazeDB = require('blazedb'); 
-const BlazeDBSchema = require('blazedb/schema/schema');
+const BlazeDB = require('../blazedb'); 
+const BlazeDBSchema = require('../schema/schema');
 const fs = require('fs').promises;
 const path = require('path');
 
 // Define JSON Adapter
-const adapter = require('blazedb/adapters/jsonAdapter');
-const dbPath = path.join(__dirname, './db.json');
-const userModel = {
-  name: 'User',
-  fields: {
-    id: { type: 'number', required: true },
-    name: { type: 'string', required: true },
-    age: { type: 'number', required: false }
-  }
-};
+const adapter = require('../adapters/jsonAdapter');
+const dbPath = path.join(__dirname, '../db.json');
 describe('BlazeDB with JSON Adapter', () => {
   let blazeDB;
 
   beforeAll(async () => {
-    blazeDB = new BlazeDB.Json(new adapter(dbPath));
+    blazeDB = new BlazeDB.Json(new adapter());
     const schemaInstance = new BlazeDBSchema(blazeDB);
-    
+    const userModel = {
+      name: 'User',
+      fields: {
+        id: { type: 'number', required: true },
+        name: { type: 'string', required: true },
+        age: { type: 'number', required: false }
+      }
+    };
 
     schemaInstance.addModel(userModel);
     await schemaInstance.createSchema();
@@ -47,28 +46,28 @@ describe('BlazeDB with JSON Adapter', () => {
 
   test('should add a user', async () => {
     const newUser = { id: 1, name: 'John Doe', age: 30 };
-    await blazeDB.insert(userModel.name, newUser);
+    await blazeDB.insert(newUser);
 
     const dbData = await fs.readFile(dbPath, 'utf8');
     const jsonData = JSON.parse(dbData);
     
-    expect(jsonData["schema"][userModel.name]).toContainEqual(newUser);
+    expect(jsonData.data).toContainEqual(newUser);
   });
 
   test('should update a user', async () => {
     const updatedUser = { name: 'Blaze' };
-    await blazeDB.update(userModel.name, 1, updatedUser);
+    await blazeDB.update(1, updatedUser);
 
-    const dbData = await blazeDB.get(userModel.name);
+    const dbData = await blazeDB.get();
     const updatedUserData = dbData.find(user => user.id === 1);
 
     expect(updatedUserData.name).toBe('Blaze');
   });
 
   test('should delete a user', async () => {
-    await blazeDB.delete(userModel.name, 1);
+    await blazeDB.delete(1);
 
-    const dbData = await blazeDB.get(userModel.name);
+    const dbData = await blazeDB.get();
     const deletedUserData = dbData.find(user => user.id === 1);
 
     expect(deletedUserData).toBeUndefined();

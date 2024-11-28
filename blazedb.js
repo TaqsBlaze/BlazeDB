@@ -8,11 +8,12 @@ class Json {
     return this.adapter.get(tableName);
   }
 
-  async insert(tableName, newData) {
+  async insert(tableName,newData) {
+	console.log(tableName);
     return this.adapter.insert(tableName, newData);
   }
 
-  async update(tableName, id, updatedData) {
+  async update(tableNmae, id, updatedData) {
     return this.adapter.update(tableName, id, updatedData);
   }
 
@@ -37,8 +38,8 @@ class Sql {
     this.adapter = adapter;
   }
 
-  async get(tableName) {
-    return this.adapter.get(tableName);
+  async get() {
+    return this.adapter.get();
   }
 
   async insert(tableName, newData) {

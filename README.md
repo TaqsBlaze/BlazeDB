@@ -3,6 +3,47 @@
 ## Installation
 `npm i blazedb@latest`
 
+
+## Creating user
+
+```
+const blazedb = require('blazedb');
+const dbschema = require('blazedb/schema');
+
+const db = new blazedb();
+
+//creating schema
+class User {
+  constructor() {
+    this.fields = {
+      name: { type: 'string' },
+      email: { type: 'string', required: true },
+      age: { type: 'number' },
+      isAdmin: { type: 'boolean' }
+    };
+  }
+}
+
+const schema = new dbschema(db);
+
+schema.addModel(User);
+
+//entering user data
+const user1 = new User();
+user1.fields.name = 'John Doe';
+user1.fields.email = 'johndoe@example.com';
+user1.fields.age = 30;
+user1.isAdmin = false;
+
+db.setData(user1).then((error) =>{
+    if(error){
+        console.log(error.message);
+    }else{
+        console.log("User added successfully..");
+    }
+});
+```
+
 # Using Adapters
 
 ## json Adapter
@@ -33,38 +74,38 @@ const userModel = {
   }
 };
 
-// Create schema handler
-schemaInstance.addModel(userModel);
-await schemaInstance.createSchema();
+  // Create schema handler
+  schemaInstance.addModel(userModel);
+  await schemaInstance.createSchema();
 
  
 
 // Example usage: Add a user
 const newUser = { id: 1, name: 'John Doe', age: 30 };
-await blazeDB.insert(userModel.name, newUser);
+await blazeDB.insert(newUser);
 
 const dbData = await fs.readFile(dbPath, 'utf8');
 const jsonData = JSON.parse(dbData);
 
 // Fetch all users from the database
-const users = await blazeDB.get(userModel.name);
+const users = await blazeDB.get();
 console.log('Users:', users);
 
 // Example usage: Update a user
 const updatedUser = { name: 'Blaze' };
-await blazeDB.update(userMode.name, 1, updatedUser);
+await blazeDB.update(1, updatedUser);
 
-const dbData = await blazeDB.get(userModel.name);
+const dbData = await blazeDB.get();
 const updatedUserData = dbData.find(user => user.id === 1);
 
 // Fetch updated users from the database
-const updatedUsers = await blazeDB.get(userModel.name);
+const updatedUsers = await blazeDB.get();
 console.log('Updated Users:', updatedUsers);
 
 // Example usage: Delete a user
-await blazeDB.delete(userModel.name, 1);
+await blazeDB.delete(1);
 
-const dbData = await blazeDB.get(userModel.name);
+const dbData = await blazeDB.get();
 const deletedUserData = dbData.find(user => user.id === 1);
 
 
