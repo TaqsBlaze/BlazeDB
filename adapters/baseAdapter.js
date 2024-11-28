@@ -4,15 +4,15 @@ class BaseAdapter {
       throw new Error('Method get() must be implemented');
     }
   
-    async insert(newData) {
+    async insert(tableName, newData) {
       throw new Error('Method insert() must be implemented');
     }
   
-    async update(id, updatedData) {
+    async update(tableName, id, updatedData) {
       throw new Error('Method update() must be implemented');
     }
   
-    async delete(id) {
+    async delete(tableName, id) {
       throw new Error('Method delete() must be implemented');
     }
   

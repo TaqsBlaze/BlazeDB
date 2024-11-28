@@ -37,8 +37,8 @@ class Sql {
     this.adapter = adapter;
   }
 
-  async get() {
-    return this.adapter.get();
+  async get(tableName) {
+    return this.adapter.get(tableName);
   }
 
   async insert(tableName, newData) {
