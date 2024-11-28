@@ -28,7 +28,7 @@
   "exports": {
     ".": "./blazedb.js",
     "./schema": "./schema/schema.js",
-    ".adapters/baseAdapter": "./adapters/baseAdapter.js",
+    "./adapters/baseAdapter": "./adapters/baseAdapter.js",
     "./adapters/jsonAdapter": "./adapters/jsonAdapter.js",
     "./adapters/sqliteAdapter": "./adapters/sqliteAdapter.js"
   },
