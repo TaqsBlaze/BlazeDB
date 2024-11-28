@@ -52,17 +52,17 @@ db.setData(user1).then((error) =>{
 
 
 ```
-const BlazeDB = require('../blazedb'); 
-const BlazeDBSchema = require('../schema/schema');
+const BlazeDB = require('blazedb'); 
+const BlazeDBSchema = require('blaze/schema');
 const fs = require('fs').promises;
 const path = require('path');
 
 // Define JSON Adapter
-const adapter = require('../adapters/jsonAdapter');
-const dbPath = path.join(__dirname, '../db.json');
+const adapter = require('blaze/adapters/jsonAdapter');
+const dbPath = path.join(__dirname, './db.json');
 
 let blazeDB;
-const dbPath = path.join(__dirname, 'db.json'); // Path to the JSON database file
+
 blazeDB = new BlazeDB.Json(new adapter());
 const schemaInstance = new BlazeDBSchema(blazeDB);
 const userModel = {
@@ -80,7 +80,7 @@ const userModel = {
 
  
 
-  // Example usage: Add a user
+// Example usage: Add a user
 const newUser = { id: 1, name: 'John Doe', age: 30 };
 await blazeDB.insert(newUser);
 
