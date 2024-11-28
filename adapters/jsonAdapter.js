@@ -70,6 +70,10 @@ class JSONAdapter extends BaseAdapter {
     try {
       const fileContent = await fs.readFile(this.dbPath, 'utf-8');
       dbData = JSON.parse(fileContent);
+      // Add the new schema to the database object
+      if (dbData[schema.name]) {
+        throw new Error(`Schema with name '${schema.name}' already exists.`);
+      }
     } catch (err) {
       // If file doesn't exist, start fresh
       if (err.code !== 'ENOENT') {
@@ -77,10 +81,7 @@ class JSONAdapter extends BaseAdapter {
       }
     }
 
-    // Add the new schema to the database object
-    if (dbData[schema.name]) {
-      throw new Error(`Schema with name '${schema.name}' already exists.`);
-    }
+    
     
     try {
       // Validate the schema object
