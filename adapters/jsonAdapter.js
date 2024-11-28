@@ -8,11 +8,11 @@ class JSONAdapter extends BaseAdapter {
     this.dbPath = dbpath;
   }
 
-  async get() {
+  async get(tableName) {
     try {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
-      return jsonData.data || [];
+      return jsonData["schema"][tableName] || [];
     } catch (err) {
       console.error('Error reading data:', err);
       throw err;
