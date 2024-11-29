@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/taqsblaze/BlazeDB#readme",
   "exports": {
-    ".": "./pixel.js",
+    ".": "./orb.js",
     "./schema": "./schema/schema.js",
     "./adapters/baseAdapter": "./adapters/baseAdapter.js",
     "./adapters/jsonAdapter": "./adapters/jsonAdapter.js",

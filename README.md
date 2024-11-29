@@ -46,24 +46,24 @@ const dbData = await fs.readFile(dbPath, 'utf8');
 const jsonData = JSON.parse(dbData);
 
 // Fetch all users from the database
-const users = await FlameDB.get(userModel.name);
+const users = await orbDB.get(userModel.name);
 console.log('Users:', users);
 
 // Example usage: Update a user
 const updatedUser = { name: 'Blaze' };
 await orbDB.update(userModel.name, 1, updatedUser);
 
-const dbData = await FlameDB.get(userModel.name);
+const dbData = await orbDB.get(userModel.name);
 const updatedUserData = dbData.find(user => user.id === 1);
 
 // Fetch updated users from the database
-const updatedUsers = await FlameDB.get(userModel.name);
+const updatedUsers = await orbDB.get(userModel.name);
 console.log('Updated Users:', updatedUsers);
 
 // Example usage: Delete a user
 await orbDB.delete(userModel.name, 1);
 
-const dbData = await FlameDB.get(userModel.name);
+const dbData = await orbDB.get(userModel.name);
 const deletedUserData = dbData.find(user => user.id === 1);
 
 
@@ -71,8 +71,7 @@ const deletedUserData = dbData.find(user => user.id === 1);
 ```
 ### Adaptors:
 ```
-I have decided to remove sqlite and mongo db adaptors as they are currently not stable
-these adaptors will be added incrimentally as they become stable
+Now json and sqlite adapters are fully functional and ready for use
 ```
 
 ## Contributing
