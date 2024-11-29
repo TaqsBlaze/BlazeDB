@@ -1,7 +1,7 @@
 # BlazeDB ![alt text](https://cdn-icons-png.flaticon.com/128/5246/5246837.png)
 
 ## Installation
-`npm i blazedb@latest`
+`npm i flamedb@latest`
 
 ----
 ## json Adapter
@@ -10,19 +10,19 @@
 
 
 ```
-const BlazeDB = require('blazedb'); 
-const BlazeDBSchema = require('blaze/schema');
+const FlameDB = require('flamedb'); 
+const FlameDBSchema = require('flamedb/schema');
 const fs = require('fs').promises;
 const path = require('path');
 
 // Define JSON Adapter
-const adapter = require('blaze/adapters/jsonAdapter');
+const adapter = require('flamedb/adapters/jsonAdapter');
 const dbPath = path.join(__dirname, './db.json');
 
-let blazeDB;
+let flameDB;
 
-blazeDB = new BlazeDB.Json(new adapter(dbPath));
-const schemaInstance = new BlazeDBSchema(blazeDB);
+flameDB = new FlameDB.Json(new adapter(dbPath));
+const schemaInstance = new FlameDBSchema(flameDB);
 const userModel = {
   name: 'User',
   fields: {
@@ -40,30 +40,30 @@ const userModel = {
 
 // Example usage: Add a user
 const newUser = { id: 1, name: 'John Doe', age: 30 };
-await blazeDB.insert(userModel.name, newUser);
+await flameDB.insert(userModel.name, newUser);
 
 const dbData = await fs.readFile(dbPath, 'utf8');
 const jsonData = JSON.parse(dbData);
 
 // Fetch all users from the database
-const users = await blazeDB.get(userModel.name);
+const users = await FlameDB.get(userModel.name);
 console.log('Users:', users);
 
 // Example usage: Update a user
 const updatedUser = { name: 'Blaze' };
-await blazeDB.update(userModel.name, 1, updatedUser);
+await flameDB.update(userModel.name, 1, updatedUser);
 
-const dbData = await blazeDB.get(userModel.name);
+const dbData = await FlameDB.get(userModel.name);
 const updatedUserData = dbData.find(user => user.id === 1);
 
 // Fetch updated users from the database
-const updatedUsers = await blazeDB.get(userModel.name);
+const updatedUsers = await FlameDB.get(userModel.name);
 console.log('Updated Users:', updatedUsers);
 
 // Example usage: Delete a user
-await blazeDB.delete(userModel.name, 1);
+await flameDB.delete(userModel.name, 1);
 
-const dbData = await blazeDB.get(userModel.name);
+const dbData = await FlameDB.get(userModel.name);
 const deletedUserData = dbData.find(user => user.id === 1);
 
 
