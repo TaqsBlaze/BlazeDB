@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/taqsblaze/BlazeDB.git"
+    "url": "git+https://github.com/taqsblaze/OrbDB.git"
   },
   "keywords": [
     "db",
@@ -23,9 +23,9 @@
   "author": "Tanaka Chinengundu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/taqsblaze/BlazeDB/issues"
+    "url": "https://github.com/taqsblaze/OrbDB/issues"
   },
-  "homepage": "https://github.com/taqsblaze/BlazeDB#readme",
+  "homepage": "https://github.com/taqsblaze/OrbDB#readme",
   "exports": {
     ".": "./orb.js",
     "./schema": "./schema/schema.js",
