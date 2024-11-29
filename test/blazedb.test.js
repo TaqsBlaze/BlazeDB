@@ -7,21 +7,21 @@ const path = require('path');
 // Define JSON Adapter
 const adapter = require('../adapters/jsonAdapter');
 const dbPath = path.join(__dirname, './db.json');
+const userModel = {
+  name: 'User',
+  fields: {
+    id: { type: 'number', required: true },
+    name: { type: 'string', required: true },
+    age: { type: 'number', required: false }
+  }
+};
 describe('OrbDB with JSON Adapter', () => {
   let orbDB;
 
   beforeAll(async () => {
     orbDB = new OrbDB.Json(new adapter(dbPath));
     const schemaInstance = new OrbDBSchema(orbDB);
-    const userModel = {
-      name: 'User',
-      fields: {
-        id: { type: 'number', required: true },
-        name: { type: 'string', required: true },
-        age: { type: 'number', required: false }
-      }
-    };
-
+    
     schemaInstance.addModel(userModel);
     await schemaInstance.createSchema();
   });
@@ -47,7 +47,7 @@ describe('OrbDB with JSON Adapter', () => {
 
   test('should add a user', async () => {
     const newUser = { id: 1, name: 'John Doe', age: 30 };
-    await orbDB.insert(newUser);
+    await orbDB.insert(userModel.name, newUser);
 
     const dbData = await fs.readFile(dbPath, 'utf8');
     const jsonData = JSON.parse(dbData);
@@ -57,7 +57,7 @@ describe('OrbDB with JSON Adapter', () => {
 
   test('should update a user', async () => {
     const updatedUser = { name: 'Blaze' };
-    await orbDB.update(1, updatedUser);
+    await orbDB.update(userModel.name, 1, updatedUser);
 
     const dbData = await orbDB.get();
     const updatedUserData = dbData.find(user => user.id === 1);
@@ -66,7 +66,7 @@ describe('OrbDB with JSON Adapter', () => {
   });
 
   test('should delete a user', async () => {
-    await orbDB.delete(1);
+    await orbDB.delete(userModel.name 1);
 
     const dbData = await orbDB.get();
     const deletedUserData = dbData.find(user => user.id === 1);
