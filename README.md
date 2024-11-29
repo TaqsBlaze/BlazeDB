@@ -1,4 +1,4 @@
-# pixelDB ![alt text](https://github.com/TaqsBlaze/BlazeDB/blob/main/image/leaf.png)
+# pixelDB ![alt text](https://raw.githubusercontent.com/TaqsBlaze/BlazeDB/refs/heads/main/image/pixel.webp)
 
 ## Installation
 `npm i leafdb@latest`
