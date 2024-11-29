@@ -69,6 +69,10 @@ const deletedUserData = dbData.find(user => user.id === 1);
 
 
 ```
+## Note:
+This project has been renamed from BlazeDB to OrdDB 
+this one is a more stable version of the project
+---
 ### Adaptors:
 ```
 Now json and sqlite adapters are fully functional and ready for use
