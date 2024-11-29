@@ -1,4 +1,4 @@
-# orbDB ![alt text](https://raw.githubusercontent.com/TaqsBlaze/BlazeDB/refs/heads/main/image/pixel.webp)
+<!-- # orbDB ![alt text](https://raw.githubusercontent.com/TaqsBlaze/BlazeDB/refs/heads/main/image/pixel.webp) -->
 
 ## Installation
 `npm i orbdb@latest`
