@@ -6,9 +6,9 @@ const adapterModule = require('../adapters/sqliteAdapter'); // Import the adapte
 describe('OrbDB with SQLite Adapter', () => {
   let orbDB;
   let sqliteAdapterInstance;
-
+  const dbPath = path.join(__dirname, './db.sqlite3');
   beforeAll(async () => {
-    sqliteAdapterInstance = new adapterModule(); // Create an instance of SQLiteAdapter
+    sqliteAdapterInstance = new adapterModule(dbPath); // Create an instance of SQLiteAdapter
     await sqliteAdapterInstance.init(); // Initialize SQLite connection
 
     // Create the schema for the test table

@@ -66,7 +66,7 @@ describe('OrbDB with JSON Adapter', () => {
   });
 
   test('should delete a user', async () => {
-    await orbDB.delete(userModel.name 1);
+    await orbDB.delete(userModel.name, 1);
 
     const dbData = await orbDB.get();
     const deletedUserData = dbData.find(user => user.id === 1);
