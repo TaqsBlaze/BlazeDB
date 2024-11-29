@@ -1,10 +1,10 @@
-const BlazeDB = require('../blazedb');
+const OrbDB = require('../orb');
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs').promises;
 const adapterModule = require('../adapters/sqliteAdapter'); // Import the adapter class
 
-describe('BlazeDB with SQLite Adapter', () => {
-  let blazeDB;
+describe('OrbDB with SQLite Adapter', () => {
+  let orbDB;
   let sqliteAdapterInstance;
 
   beforeAll(async () => {
@@ -18,13 +18,13 @@ describe('BlazeDB with SQLite Adapter', () => {
       isActive: { type: 'boolean' },
     });
 
-    // Initialize BlazeDB with the SQLite adapter instance
-    blazeDB = new BlazeDB.Sql(sqliteAdapterInstance);
+    // Initialize OrbDB with the SQLite adapter instance
+    orbDB = new OrbDB.Sql(sqliteAdapterInstance);
   });
 
   afterAll(async () => {
     if (sqliteAdapterInstance.dbPath) {
-      await blazeDB.close(); // Ensure the database connection is closed
+      await orbDB.close(); // Ensure the database connection is closed
       try {
         await fs.unlink(sqliteAdapterInstance.dbPath);
       } catch (error) {
@@ -52,7 +52,7 @@ describe('BlazeDB with SQLite Adapter', () => {
 
   test('should add a user', async () => {
     const newUser = { id: 1, name: 'John Doe', isActive: false };
-    await blazeDB.insert('test_table', newUser);
+    await orbDB.insert('test_table', newUser);
 
     const row = await sqliteAdapterInstance.db.get('SELECT * FROM test_table WHERE id = ?', [1]);
     expect(row.name).toBe('John Doe');
@@ -61,14 +61,14 @@ describe('BlazeDB with SQLite Adapter', () => {
 
   test('should update a user', async () => {
     const updatedUser = { name: 'Blaze' };
-    await blazeDB.update('test_table', 1, updatedUser);
+    await orbDB.update('test_table', 1, updatedUser);
 
     const row = await sqliteAdapterInstance.db.get('SELECT * FROM test_table WHERE id = ?', [1]);
     expect(row.name).toBe('Blaze');
   });
 
   test('should delete a user', async () => {
-    await blazeDB.delete('test_table', 1);
+    await orbDB.delete('test_table', 1);
 
     const row = await sqliteAdapterInstance.db.get('SELECT * FROM test_table WHERE id = ?', [1]);
     expect(row).toBeUndefined();
