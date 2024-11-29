@@ -1,4 +1,6 @@
 # orbDB
+[![OrbDB Test CI](https://github.com/TaqsBlaze/OrbDB/actions/workflows/node.js.yml/badge.svg)](https://github.com/TaqsBlaze/OrbDB/actions/workflows/node.js.yml)
+
 ![alt text](https://raw.githubusercontent.com/TaqsBlaze/BlazeDB/refs/heads/main/image/orb.webp)
 
 ## Installation
