@@ -63,9 +63,9 @@ class Sql {
   }
 }
 
-class FlameDB {
+class OrbDB {
   static Json = Json;
   static Sql = Sql;
 }
 
-module.exports =  FlameDB;
+module.exports =  OrbDB;

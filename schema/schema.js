@@ -1,8 +1,8 @@
-const BlazeDB = require("../orb"); // Consider removing if using dependency injection
+const OrbDB = require("../orb"); // Consider removing if using dependency injection
 
-class BlazeDBSchema {
+class OrbDBSchema {
     constructor(flameDBInstance) {
-        this.BlazeDB = flameDBInstance;
+        this.OrbDB = flameDBInstance;
         this.models = [];
     }
 
@@ -40,9 +40,9 @@ class BlazeDBSchema {
                 }
             });
 
-            await this.BlazeDB.createSchema({ tableName: model.name, ...schema });
+            await this.OrbDB.createSchema({ tableName: model.name, ...schema });
         });
     }
 }
 
-module.exports = BlazeDBSchema;
+module.exports = OrbDBSchema;
