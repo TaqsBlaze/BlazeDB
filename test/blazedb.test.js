@@ -52,7 +52,7 @@ describe('OrbDB with JSON Adapter', () => {
     const dbData = await fs.readFile(dbPath, 'utf8');
     const jsonData = JSON.parse(dbData);
     
-    expect(jsonData["schema"][userModel.name]]).toContainEqual(newUser);
+    expect(jsonData["schema"][userModel.name]).toContainEqual(newUser);
   });
 
   test('should update a user', async () => {
