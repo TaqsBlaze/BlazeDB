@@ -1,4 +1,4 @@
-# LeafDB ![alt text](https://github.com/TaqsBlaze/BlazeDB/blob/main/image/leaf.png)
+# pixelDB ![alt text](https://github.com/TaqsBlaze/BlazeDB/blob/main/image/leaf.png)
 
 ## Installation
 `npm i leafdb@latest`
@@ -10,19 +10,19 @@
 
 
 ```
-const LeafDB = require('leaf'); 
-const LeafDBSchema = require('flamedb/schema');
+const pixelDB = require('pixel'); 
+const PixelDB = require('pixel/schema');
 const fs = require('fs').promises;
 const path = require('path');
 
 // Define JSON Adapter
-const adapter = require('flamedb/adapters/jsonAdapter');
+const adapter = require('pixel/adapters/jsonAdapter');
 const dbPath = path.join(__dirname, './db.json');
 
-let leafDB;
+let pixelDB;
 
-leafDB = new LeafDB.Json(new adapter(dbPath));
-const schemaInstance = new LeafDBSchema(leafDB);
+pixelDB = new pixelDB.Json(new adapter(dbPath));
+const schemaInstance = new PixelDB(pixelDB);
 const userModel = {
   name: 'User',
   fields: {
@@ -40,7 +40,7 @@ const userModel = {
 
 // Example usage: Add a user
 const newUser = { id: 1, name: 'John Doe', age: 30 };
-await leafDB.insert(userModel.name, newUser);
+await pixelDB.insert(userModel.name, newUser);
 
 const dbData = await fs.readFile(dbPath, 'utf8');
 const jsonData = JSON.parse(dbData);
@@ -51,7 +51,7 @@ console.log('Users:', users);
 
 // Example usage: Update a user
 const updatedUser = { name: 'Blaze' };
-await leafDB.update(userModel.name, 1, updatedUser);
+await pixelDB.update(userModel.name, 1, updatedUser);
 
 const dbData = await FlameDB.get(userModel.name);
 const updatedUserData = dbData.find(user => user.id === 1);
@@ -61,7 +61,7 @@ const updatedUsers = await FlameDB.get(userModel.name);
 console.log('Updated Users:', updatedUsers);
 
 // Example usage: Delete a user
-await leafDB.delete(userModel.name, 1);
+await pixelDB.delete(userModel.name, 1);
 
 const dbData = await FlameDB.get(userModel.name);
 const deletedUserData = dbData.find(user => user.id === 1);

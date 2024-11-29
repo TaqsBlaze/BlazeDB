@@ -1,8 +1,8 @@
 {
-  "name": "leaf",
-  "version": "1.0.23",
-  "description": "FlameDB is highly flexible ORM suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages and the flexibility to use a database of your choice",
-  "main": "flamedb.js",
+  "name": "pixeldb",
+  "version": "1.0.0",
+  "description": "PixelDB is highly flexible ORM suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages and the flexibility to use a database of your choice",
+  "main": "pixel.js",
   "scripts": {
     "test": "jest --coverage --detectOpenHandles"
   },
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/taqsblaze/BlazeDB#readme",
   "exports": {
-    ".": "./flamedb.js",
+    ".": "./pixel.js",
     "./schema": "./schema/schema.js",
     "./adapters/baseAdapter": "./adapters/baseAdapter.js",
     "./adapters/jsonAdapter": "./adapters/jsonAdapter.js",

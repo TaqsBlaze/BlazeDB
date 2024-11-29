@@ -1,4 +1,4 @@
-const BlazeDB = require("../leaf"); // Consider removing if using dependency injection
+const BlazeDB = require("../pixel"); // Consider removing if using dependency injection
 
 class BlazeDBSchema {
     constructor(flameDBInstance) {

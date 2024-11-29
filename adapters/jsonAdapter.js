@@ -20,8 +20,7 @@ class JSONAdapter extends BaseAdapter {
   }
 
   async insert(tableName, newData) {
-  console.log(`Data: ${newData}`)
-  console.log(`Table: ${tableName}`)
+
   try {
     // Read the database file
     const dbData = await fs.readFile(this.dbPath, 'utf8');
@@ -34,8 +33,7 @@ class JSONAdapter extends BaseAdapter {
 
     // Set the default data array if it doesn't exist
     const tableData = jsonData['schema'][tableName];
-	
-	console.log(`Table Data: ${JSON.stringify(tableData)}`)
+
     // Auto-increment the id or set default id
     if (!tableData.length <= 0) {
       newData.id = tableData[tableData.length - 1].id + 1; // Auto-increment id
