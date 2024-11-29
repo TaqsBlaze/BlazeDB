@@ -63,9 +63,9 @@ class Sql {
   }
 }
 
-class BlazeDB {
+class FlameDB {
   static Json = Json;
   static Sql = Sql;
 }
 
-module.exports = BlazeDB;
+module.exports =  FlameDB;
