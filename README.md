@@ -1,4 +1,5 @@
-<!-- # orbDB ![alt text](https://raw.githubusercontent.com/TaqsBlaze/BlazeDB/refs/heads/main/image/pixel.webp) -->
+# orbDB
+![alt text](https://raw.githubusercontent.com/TaqsBlaze/BlazeDB/refs/heads/main/image/orb.webp)
 
 ## Installation
 `npm i orbdb@latest`
@@ -34,15 +35,19 @@ const userModel = {
   }
 };
 
-// Create schema handler
-schemaInstance.addModel(userModel);
-await schemaInstance.createSchema();
 
+let init = ( async () => {
+    // initialize database
+    schemaInstance.addModel(userModel);
+    await schemaInstance.createSchema();
+})
+
+init();
  
 
 // Example usage: Add a user
 const newUser = { id: 1, name: 'John Doe', age: 30 };
-await orbDB.insert(userModel.name, newUser);
+orbDB.insert(userModel.name, newUser);
 
 const dbData = await fs.readFile(dbPath, 'utf8');
 const jsonData = JSON.parse(dbData);
@@ -53,7 +58,7 @@ console.log('Users:', users);
 
 // Example usage: Update a user
 const updatedUser = { name: 'Blaze' };
-await orbDB.update(userModel.name, 1, updatedUser);
+orbDB.update(userModel.name, 1, updatedUser);
 
 const dbData = await orbDB.get(userModel.name);
 const updatedUserData = dbData.find(user => user.id === 1);
@@ -63,7 +68,7 @@ const updatedUsers = await orbDB.get(userModel.name);
 console.log('Updated Users:', updatedUsers);
 
 // Example usage: Delete a user
-await orbDB.delete(userModel.name, 1);
+orbDB.delete(userModel.name, 1);
 
 const dbData = await orbDB.get(userModel.name);
 const deletedUserData = dbData.find(user => user.id === 1);
@@ -79,6 +84,47 @@ this one is a more stable version of the project
 ```
 Now json and sqlite adapters are fully functional and ready for use
 ```
+# Why OrbDB?
+
+Here are the advantages of using **OrbDB**, based on its features and design principles:
+
+### 1. **JSON and SQLite Adapter Support**  
+   OrbDB allows developers to choose between lightweight JSON-based storage or robust SQLite databases, offering flexibility for various project requirements.
+
+### 2. **Dynamic Schema Management**  
+   - OrbDB provides dynamic schema creation, making it easier to define and manage models directly within your application.  
+   - Developers can work with multiple models simultaneously without additional setup.
+
+### 3. **Custom Session Management**  
+   - With its session class, OrbDB introduces commit and rollback functionality, making it easier to manage transactions and ensure data integrity.
+
+### 4. **Simplified Development**  
+   - By abstracting away database operations, OrbDB lets developers focus on writing application logic rather than low-level database queries.
+
+### 5. **Auto Incrementing IDs**  
+   - Automatically assigns and increments IDs for entries in tables, reducing the overhead of managing primary keys.
+
+### 6. **Error Handling and Validation**  
+   - Ensures schema compliance by validating data types and properties at runtime.  
+   - Provides meaningful error messages, helping developers debug effectively.
+
+### 7. **Cross Platform Compatibility**  
+   - Designed to work seamlessly across operating systems, including Linux, Windows, and MacOS.
+
+### 8. **Lightweight and Scalable**  
+   - OrbDB is ideal for small to medium-sized applications and can scale effectively by switching between adapters.
+
+### 9. **Easy Integration**  
+   - With a modular design, OrbDB can be integrated into existing applications with minimal effort.  
+   - Future-proofed for additional adapters or features, making it a long-term investment.
+
+### 10. **Developer Friendly APIs**  
+   - Intuitive and concise APIs make it easier for developers to perform operations like inserts, updates, and schema management without a steep learning curve.
+
+### 11. **Open Source and Community Driven**  
+   - The project being open source fosters community contributions, ensuring continuous improvement and access to a wider knowledge base.
+
+These advantages position OrbDB as a versatile ORM that caters to both beginner and experienced developers, promoting productivity and efficiency. It is particularly appealing for projects requiring lightweight and flexible data management solutions.
 
 ## Contributing
 
