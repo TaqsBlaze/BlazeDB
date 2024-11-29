@@ -10,8 +10,8 @@
 
 
 ```
-const FlameDB = require('flamedb'); 
-const FlameDBSchema = require('flamedb/schema');
+const LeafDB = require('leaf'); 
+const LeafDBSchema = require('flamedb/schema');
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -19,10 +19,10 @@ const path = require('path');
 const adapter = require('flamedb/adapters/jsonAdapter');
 const dbPath = path.join(__dirname, './db.json');
 
-let flameDB;
+let leafDB;
 
-flameDB = new FlameDB.Json(new adapter(dbPath));
-const schemaInstance = new FlameDBSchema(flameDB);
+leafDB = new LeafDB.Json(new adapter(dbPath));
+const schemaInstance = new LeafDBSchema(leafDB);
 const userModel = {
   name: 'User',
   fields: {
@@ -40,7 +40,7 @@ const userModel = {
 
 // Example usage: Add a user
 const newUser = { id: 1, name: 'John Doe', age: 30 };
-await flameDB.insert(userModel.name, newUser);
+await leafDB.insert(userModel.name, newUser);
 
 const dbData = await fs.readFile(dbPath, 'utf8');
 const jsonData = JSON.parse(dbData);
@@ -51,7 +51,7 @@ console.log('Users:', users);
 
 // Example usage: Update a user
 const updatedUser = { name: 'Blaze' };
-await flameDB.update(userModel.name, 1, updatedUser);
+await leafDB.update(userModel.name, 1, updatedUser);
 
 const dbData = await FlameDB.get(userModel.name);
 const updatedUserData = dbData.find(user => user.id === 1);
@@ -61,7 +61,7 @@ const updatedUsers = await FlameDB.get(userModel.name);
 console.log('Updated Users:', updatedUsers);
 
 // Example usage: Delete a user
-await flameDB.delete(userModel.name, 1);
+await leafDB.delete(userModel.name, 1);
 
 const dbData = await FlameDB.get(userModel.name);
 const deletedUserData = dbData.find(user => user.id === 1);

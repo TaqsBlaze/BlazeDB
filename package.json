@@ -1,5 +1,5 @@
 {
-  "name": "flamedb",
+  "name": "leaf",
   "version": "1.0.0",
   "description": "FlameDB is highly flexible ORM suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages and the flexibility to use a database of your choice",
   "main": "flamedb.js",
