@@ -17,7 +17,8 @@
     "ORM",
     "sqlite",
     "index",
-    "json"
+    "json",
+    "sqlite"
   ],
   "author": "Tanaka Chinengundu",
   "license": "MIT",
