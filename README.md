@@ -1,7 +1,7 @@
-# pixelDB ![alt text](https://raw.githubusercontent.com/TaqsBlaze/BlazeDB/refs/heads/main/image/pixel.webp)
+# orbDB ![alt text](https://raw.githubusercontent.com/TaqsBlaze/BlazeDB/refs/heads/main/image/pixel.webp)
 
 ## Installation
-`npm i leafdb@latest`
+`npm i orbdb@latest`
 
 ----
 ## json Adapter
@@ -10,19 +10,19 @@
 
 
 ```
-const pixelDB = require('pixel'); 
-const PixelDB = require('pixel/schema');
+const OrbDB = require('orb'); 
+const PixelDB = require('orb/schema');
 const fs = require('fs').promises;
 const path = require('path');
 
 // Define JSON Adapter
-const adapter = require('pixel/adapters/jsonAdapter');
+const adapter = require('orb/adapters/jsonAdapter');
 const dbPath = path.join(__dirname, './db.json');
 
-let pixelDB;
+let orbDB;
 
-pixelDB = new pixelDB.Json(new adapter(dbPath));
-const schemaInstance = new PixelDB(pixelDB);
+orbDB = new OrbDB.Json(new adapter(dbPath));
+const schemaInstance = new PixelDB(orbDB);
 const userModel = {
   name: 'User',
   fields: {
@@ -40,7 +40,7 @@ const userModel = {
 
 // Example usage: Add a user
 const newUser = { id: 1, name: 'John Doe', age: 30 };
-await pixelDB.insert(userModel.name, newUser);
+await orbDB.insert(userModel.name, newUser);
 
 const dbData = await fs.readFile(dbPath, 'utf8');
 const jsonData = JSON.parse(dbData);
@@ -51,7 +51,7 @@ console.log('Users:', users);
 
 // Example usage: Update a user
 const updatedUser = { name: 'Blaze' };
-await pixelDB.update(userModel.name, 1, updatedUser);
+await orbDB.update(userModel.name, 1, updatedUser);
 
 const dbData = await FlameDB.get(userModel.name);
 const updatedUserData = dbData.find(user => user.id === 1);
@@ -61,7 +61,7 @@ const updatedUsers = await FlameDB.get(userModel.name);
 console.log('Updated Users:', updatedUsers);
 
 // Example usage: Delete a user
-await pixelDB.delete(userModel.name, 1);
+await orbDB.delete(userModel.name, 1);
 
 const dbData = await FlameDB.get(userModel.name);
 const deletedUserData = dbData.find(user => user.id === 1);

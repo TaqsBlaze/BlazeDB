@@ -1,7 +1,7 @@
 {
-  "name": "pixeldb",
+  "name": "OrbDB",
   "version": "1.0.0",
-  "description": "PixelDB is highly flexible, fast, light weight ORM suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages and the flexibility to use a database of your choice",
+  "description": "OrbDB is highly flexible, fast, light weight ORM suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages and the flexibility to use a database of your choice",
   "main": "pixel.js",
   "scripts": {
     "test": "jest --coverage --detectOpenHandles"
@@ -18,7 +18,7 @@
     "sqlite",
     "index",
     "json",
-    "flameDB"
+    "OrbDB"
   ],
   "author": "Tanaka Chinengundu",
   "license": "MIT",
