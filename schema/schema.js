@@ -1,8 +1,8 @@
-const BlazeDB = require("../blazedb"); // Consider removing if using dependency injection
+const BlazeDB = require("../flamedb"); // Consider removing if using dependency injection
 
 class BlazeDBSchema {
-    constructor(blazeDBInstance) {
-        this.BlazeDB = blazeDBInstance;
+    constructor(flameDBInstance) {
+        this.BlazeDB = flameDBInstance;
         this.models = [];
     }
 
