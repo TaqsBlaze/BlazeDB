@@ -11,7 +11,7 @@
 
 ```
 const OrbDB = require('orb'); 
-const PixelDB = require('orb/schema');
+const OrbDBSchema = require('orb/schema');
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -22,7 +22,9 @@ const dbPath = path.join(__dirname, './db.json');
 let orbDB;
 
 orbDB = new OrbDB.Json(new adapter(dbPath));
-const schemaInstance = new PixelDB(orbDB);
+const schemaInstance = new OrbDBSchema(orbDB);
+
+// Define your model here
 const userModel = {
   name: 'User',
   fields: {
@@ -32,9 +34,9 @@ const userModel = {
   }
 };
 
-  // Create schema handler
-  schemaInstance.addModel(userModel);
-  await schemaInstance.createSchema();
+// Create schema handler
+schemaInstance.addModel(userModel);
+await schemaInstance.createSchema();
 
  
 
