@@ -1,6 +1,7 @@
 const OrbDB = require('../orb');
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs').promises;
+const path = require('path');
 const adapterModule = require('../adapters/sqliteAdapter'); // Import the adapter class
 
 describe('OrbDB with SQLite Adapter', () => {
