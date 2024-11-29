@@ -136,8 +136,8 @@ We welcome contributions to the project! Here’s how you can help:
 
 2. **Clone Your Fork**: Clone your forked repository to your local machine:
     ```bash
-    git clone https://github.com/taqsblaze/BlazeDB
-    cd BlazeDB
+    git clone https://github.com/taqsblaze/OrbDB
+    cd OrbDB
     ```
 
 3. **Create a New Branch**: It’s important to create a new branch for your changes:
