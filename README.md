@@ -1,7 +1,7 @@
-# BlazeDB ![alt text](https://cdn-icons-png.flaticon.com/128/5246/5246837.png)
+# LeafDB ![alt text](https://github.com/TaqsBlaze/BlazeDB/blob/main/image/leaf.png)
 
 ## Installation
-`npm i flamedb@latest`
+`npm i leafdb@latest`
 
 ----
 ## json Adapter
