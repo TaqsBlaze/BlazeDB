@@ -52,14 +52,14 @@ describe('OrbDB with JSON Adapter', () => {
     const dbData = await fs.readFile(dbPath, 'utf8');
     const jsonData = JSON.parse(dbData);
     
-    expect(jsonData.data).toContainEqual(newUser);
+    expect(jsonData["schema"[userModel.name]]).toContainEqual(newUser);
   });
 
   test('should update a user', async () => {
     const updatedUser = { name: 'Blaze' };
     await orbDB.update(userModel.name, 1, updatedUser);
 
-    const dbData = await orbDB.get();
+    const dbData = await orbDB.get(userModel.name);
     const updatedUserData = dbData.find(user => user.id === 1);
 
     expect(updatedUserData.name).toBe('Blaze');
@@ -68,7 +68,7 @@ describe('OrbDB with JSON Adapter', () => {
   test('should delete a user', async () => {
     await orbDB.delete(userModel.name, 1);
 
-    const dbData = await orbDB.get();
+    const dbData = await orbDB.get(userModel.name);
     const deletedUserData = dbData.find(user => user.id === 1);
 
     expect(deletedUserData).toBeUndefined();
