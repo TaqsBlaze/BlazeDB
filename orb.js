@@ -13,7 +13,7 @@ class Json {
     return this.adapter.insert(tableName, newData);
   }
 
-  async update(tableNmae, id, updatedData) {
+  async update(tableName, id, updatedData) {
     return this.adapter.update(tableName, id, updatedData);
   }
 
