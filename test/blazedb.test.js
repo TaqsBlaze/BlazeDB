@@ -12,7 +12,7 @@ const userModel = {
   fields: {
     id: { type: 'number', required: true },
     name: { type: 'string', required: true },
-    age: { type: 'number', required: false }
+    age: { type: 'number', required: true }
   }
 };
 describe('OrbDB with JSON Adapter', () => {
@@ -46,13 +46,14 @@ describe('OrbDB with JSON Adapter', () => {
   });
 
   test('should add a user', async () => {
-    const newUser = { id: 1, name: 'John Doe', age: 30 };
+    const newUser = { id: 1, name: '<b>John Doe</b>./;+=-_', age: 30 };
+    const newUserc = { id: 1, name: 'John Doe', age: 30 };
     await orbDB.insert(userModel.name, newUser);
 
     const dbData = await fs.readFile(dbPath, 'utf8');
     const jsonData = JSON.parse(dbData);
-    
-    expect(jsonData["schema"][userModel.name]).toContainEqual(newUser);
+ 
+    expect(jsonData["schema"][userModel.name]).toContainEqual(newUserc);
   });
 
   test('should update a user', async () => {

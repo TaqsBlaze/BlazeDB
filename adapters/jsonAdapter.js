@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const BaseAdapter = require('./baseAdapter');
-
+const { sanitizeInput }  = require("../utility/sanitizer");
 class JSONAdapter extends BaseAdapter {
   constructor(dbpath) {
     super();
@@ -38,13 +38,16 @@ class JSONAdapter extends BaseAdapter {
     if (!tableData.length <= 0) {
       newData.id = tableData[tableData.length - 1].id + 1; // Auto-increment id
     } else {
-	  console.log(tableName)
-	  console.log(newData)
       newData.id = 1; // Set default id
     }
 
+    // sanitize data
+    console.log('>>>>', jsonData);
+    console.log('>>> INCOMIUNG:',newData);
+    const cleanData = sanitizeInput(jsonData.schema, newData)
+    console.log('>>> Clean:', cleanData);
     // Add the new data to the table
-    tableData.push(newData);
+    jsonData['schema'][tableName].push(cleanData);
 
     // Write the updated data back to the file
     await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
@@ -83,7 +86,7 @@ class JSONAdapter extends BaseAdapter {
   }
 
   async createSchema(schema) {
-	console.log(schema)
+
     try {
       const formattedSchema = {
         properties: schema.properties || {},

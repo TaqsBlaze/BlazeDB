@@ -64,6 +64,7 @@ describe('OrbDB with SQLite Adapter', () => {
     const updatedUser = { name: 'Blaze' };
     await orbDB.update('test_table', 1, updatedUser);
 
+
     const row = await sqliteAdapterInstance.db.get('SELECT * FROM test_table WHERE id = ?', [1]);
     expect(row.name).toBe('Blaze');
   });

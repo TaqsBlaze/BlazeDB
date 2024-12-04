@@ -17,7 +17,6 @@ class SQLiteAdapter {
   }
 
   async createSchema( tableName, properties ) {
-    console.log("SCHEMA PASSED:", { tableName, properties });
 
     if (!this.db) {
       await this.init();

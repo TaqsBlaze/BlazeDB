@@ -26,7 +26,7 @@ class OrbDBSchema {
                 if (fieldType === 'string') {
                     fieldSchema.type = 'string';
                 } else if (fieldType === 'number') {
-                    fieldSchema.type = 'integer';
+                    fieldSchema.type = 'number';
                 } else if (fieldType === 'boolean') {
                     fieldSchema.type = 'boolean';
                 }
