@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const BaseAdapter = require('./baseAdapter');
-const { sanitizeInput }  = require("../utility/sanitizer");
+const { sanitizeInput }  = require("../utils/sanitizer");
 class JSONAdapter extends BaseAdapter {
   constructor(dbpath) {
     super();

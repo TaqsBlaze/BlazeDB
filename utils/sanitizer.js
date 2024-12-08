@@ -3,7 +3,7 @@ function sanitizeInput(model, inputData) {
   console.log('....:MODEL:', model);
   console.log('.....:DATA:', inputData)
   const sanitizedData = {};
-  const fields = model.properties;
+  const fields = model.properties || model.fields;
 
   for (const [field, rules] of Object.entries(fields)) {
     const value = inputData[field];
@@ -23,11 +23,20 @@ function sanitizeInput(model, inputData) {
 
     // Sanitize strings to remove special characters
     let sanitizedValue = value;
-    if (rules.type === 'string') {
-      // Remove HTML tags
-      sanitizedValue = sanitizedValue.replace(/<\/?[^>]+(>|$)/g, '');
-      sanitizedValue = sanitizedValue.replace(/[^a-zA-Z0-9\s]/g, ''); // Remove special characters except spaces
+
+    if (typeof value === 'string') {
+        // Always remove HTML tags first
+        sanitizedValue = sanitizedValue.replace(/<\/?[^>]+(>|$)/g, '');
+
+        if (field === 'email') {
+            // Email-specific sanitization: Keep only alphanumeric, '.', and '@'
+            sanitizedValue = sanitizedValue.replace(/[^a-zA-Z0-9.@]/g, '');
+        } else {
+            // General string sanitization: Remove special characters except spaces
+            sanitizedValue = sanitizedValue.replace(/[^a-zA-Z0-9\s]/g, '');
+        }
     }
+
 
     // Additional constraints
     if (rules.maxLength !== undefined && sanitizedValue.length > rules.maxLength) {

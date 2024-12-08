@@ -76,12 +76,28 @@ const dbData = await orbDB.get(userModel.name);
 const deletedUserData = dbData.find(user => user.id === 1);
 
 
+```
+# Hashing data
+### how to use:
+```
+const HashUtility = require("orbdb/utils/hash");
+
+const sampleData = "Data to be hashed";
+const hash = HashUtility.hash(sampleData);
+const isMatch = HashUtility.verify(sampleData, hash);
+
+if(isMatch){
+   console.log("Hash match");
+
+}
+```
+
+# Sanitizing Data
 
 ```
-## Note:
-This project has been renamed from BlazeDB to OrdDB 
-this one is a more stable version of the project
----
+Added data sanitization. special characters from input data will now be striped and only clean data is stored in the database
+making sure your system is secure and data integrity is intact 
+```
 ### Adaptors:
 ```
 Now json and sqlite adapters are fully functional and ready for use

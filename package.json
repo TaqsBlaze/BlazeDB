@@ -31,7 +31,9 @@
     "./schema": "./schema/schema.js",
     "./adapters/baseAdapter": "./adapters/baseAdapter.js",
     "./adapters/jsonAdapter": "./adapters/jsonAdapter.js",
-    "./adapters/sqliteAdapter": "./adapters/sqliteAdapter.js"
+    "./adapters/sqliteAdapter": "./adapters/sqliteAdapter.js",
+    "./utils/hash": "./utility/hash.js",
+    "./utils/sanitizer": "./utility/sanitizer.js"
   },
   "dependencies": {
     "better-sqlite3": "^11.6.0",

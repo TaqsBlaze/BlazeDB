@@ -29,7 +29,7 @@ describe('OrbDB with JSON Adapter', () => {
   afterAll(async () => {
     if (dbPath) {
       try {
-        await fs.unlink(dbPath);
+        //await fs.unlink(dbPath);
       } catch (error) {
         console.error(`Error cleaning up the database at ${dbPath}:`, error);
       }
