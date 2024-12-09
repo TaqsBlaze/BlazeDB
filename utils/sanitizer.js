@@ -1,7 +1,6 @@
 function sanitizeInput(model, inputData) {
 
-  console.log('....:MODEL:', model);
-  console.log('.....:DATA:', inputData)
+
   const sanitizedData = {};
   const fields = model.properties || model.fields;
 

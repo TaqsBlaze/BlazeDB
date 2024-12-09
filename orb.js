@@ -9,7 +9,6 @@ class Json {
   }
 
   async insert(tableName,newData) {
-	console.log(tableName);
     return this.adapter.insert(tableName, newData);
   }
 

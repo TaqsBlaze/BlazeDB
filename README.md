@@ -77,6 +77,44 @@ const deletedUserData = dbData.find(user => user.id === 1);
 
 
 ```
+# Sqlite Adapter
+### How to use
+```
+const OrbDB = require('orb');
+const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs').promises;
+const path = require('path');
+const adapterModule = require('orb/adapters/sqliteAdapter'); // Import the adapter class
+
+let orbDB;
+let sqliteAdapterInstance;
+const dbPath = path.join(__dirname, './db.sqlite3');
+
+sqliteAdapterInstance = new adapterModule(dbPath); // Create an instance of SQLiteAdapter
+await sqliteAdapterInstance.init(); // Initialize SQLite connection
+
+// Create the schema for the test table
+await sqliteAdapterInstance.createSchema('test_table', {
+   id: { type: 'integer' },
+   name: { type: 'string' },
+   isActive: { type: 'boolean' },
+});
+
+// Initialize OrbDB with the SQLite adapter instance
+orbDB = new OrbDB.Sql(sqliteAdapterInstance);
+
+// Add record 
+const newUser = { id: 1, name: 'John Doe', isActive: false };
+await orbDB.insert('test_table', newUser);
+
+// Update reord
+const updatedUser = { name: 'Blaze' };
+await orbDB.update('test_table', 1, updatedUser);
+
+// Delete record
+await orbDB.delete('test_table', 1);
+```
+
 # Hashing data
 ### how to use:
 ```
